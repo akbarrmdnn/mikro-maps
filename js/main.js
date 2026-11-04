@@ -63,12 +63,12 @@ renderMainMenu(markers, map);
 const drawerToggle = document.getElementById("my-drawer-2");
 const drawerOverlay = document.getElementById("drawerOverlay");
 
-// Tutup sidebar ketika area luar sidebar diklik
+// tutup sidebar ketika area luar sidebar diklik
 drawerOverlay.addEventListener("click", () => {
     drawerToggle.checked = false;
 });
 
-// Tutup sidebar ketika tombol Escape ditekan
+// tutup sidebar ketika tombol Escape ditekan
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         drawerToggle.checked = false;

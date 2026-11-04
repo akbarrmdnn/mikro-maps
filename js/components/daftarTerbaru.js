@@ -38,14 +38,14 @@ export function renderDaftarTerbaru({ sidebarMenu, markers, map }) {
 
   sidebarMenu.innerHTML = html;
 
-  // Tombol kembali
+  // tombol kembali
   document.getElementById("backBtn").addEventListener("click", () => {
     import("../disimpan.js").then(({ renderDisimpanMenu }) => {
       renderDisimpanMenu({sidebarMenu, markers, map});
     });
   });
 
-  // Tombol lihat di peta
+  // tombol lihat di peta
   sidebarMenu.querySelectorAll(".lihat-peta-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const lat = parseFloat(btn.dataset.lat);

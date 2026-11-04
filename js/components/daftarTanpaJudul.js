@@ -6,7 +6,7 @@ const STORAGE_KEY = "daftarTanpaJudul";
 let state = {
   nama: "Daftar Tanpa Judul",
   deskripsi: "",
-  items: [], // [{ id, name, address, category, lat, lng }]
+  items: [], 
   dibuat: new Date().toISOString(),
   terakhirDiubah: new Date().toISOString(),
 };
@@ -141,7 +141,8 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
     </li>
   `;
 
-  // ============ EVENT LISTENERS ============
+ 
+  //event listener
 
   // Back
   document.getElementById("backBtn").addEventListener("click", () => {
@@ -170,7 +171,7 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
    });
   });
 
-  // Tambahkan tempat → munculin search bar
+  // Tambahkan tempat munculin search bar
   document.getElementById("tambahBtn").addEventListener("click", () => {
     const section = document.getElementById("searchSection");
     section.classList.toggle("hidden");
@@ -179,7 +180,7 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
     }
   });
 
-  // Selesai → sembunyiin search bar
+  // Selesai sembunyiin search bar
   document.getElementById("selesaiBtn").addEventListener("click", () => {
     document.getElementById("searchSection").classList.add("hidden");
   });
@@ -254,7 +255,6 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
 
         // Update statistik
         const stat = document.querySelector(".text-sm.text-gray-500");
-        // simple: re-render aja
         renderDaftarTanpaJudul({ sidebarMenu, markers, map });
       });
     });

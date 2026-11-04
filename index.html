@@ -41,7 +41,6 @@
             align-items: center;
             gap: 12px;
             max-width: calc(100vw - 40px);
-            flex-wrap: wrap;
         }
 
         .search-container{
@@ -56,7 +55,7 @@
 
         @media (max-width: 768px) {
           .search-container {
-          width: calc(100vw - 100px);   /* ← full width minus hamburger */
+          width: calc(100vw - 100px);   
           flex-shrink: 1;
         }
        }
@@ -129,12 +128,12 @@
         #terbaruList .terbaru-item {
          display: flex !important; 
         }
-        /* @media (max-width: 768px) {
-        .drawer-overlay {
-        left: 320px;
-        width: calc(100% - 320px);
-      }
-    } */
+        
+        @media (max-width: 768px) {
+         .floating-container {
+         flex-wrap: wrap;
+        }
+       }
         
     
     </style>
