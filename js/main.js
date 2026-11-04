@@ -1,101 +1,78 @@
 import { umkmData } from "./data.js";
-import { initMap } from "./map.js";
+import { initMap, getIconByCategory } from "./map.js";
 import { initSearch } from "./search.js";
 import { initFilter } from "./filter.js";
 import { renderMainMenu, renderDisimpanMenu } from "./disimpan.js";
+window.koordinatBaru = {lat: null, lng:null};
+
 
 
 const { map, markers } = initMap(umkmData);
 
+//load umkm dari localstorage(hasil dari partisipasi)
+const userUmkm = JSON.parse(localStorage.getItem("umkmPartisipasi") || "[]");
+userUmkm.forEach((umkm) => {
+  const marker = L.marker([umkm.lat, umkm.lng], {
+     icon: getIconByCategory(umkm.category)
+  })
+  .addTo(map)
+  .bindPopup(`
+    <div class = "p-2">
+      <h3 class ="font-bold">${umkm.name}</h3>
+      <p class= "text-sm text-gray-500">${umkm.category}</p>
+      <p class = "text-xs">📍 ${umkm.address}</p>
+      <p class = "text-xs">⭐ ${umkm.rating}/5</p>
+    </div>
+    `
+  );
+
+    markers.push({
+    id: umkm.id,
+    name: umkm.name,
+    address: umkm.address,
+    category: umkm.category,
+    rating: umkm.rating,
+    image: umkm.image,
+    lat: umkm.lat,
+    lng: umkm.lng,
+    marker: marker
+  });
+});
+map.on("click", (e) => {
+    //tempat nyimpen kordinat yg di klil user
+    window.koordinatBaru= {lat: e.latlng.lat, lng:e.latlng.lng};
+
+    //kasih visual sementara
+    if (window.markerSementara){
+        map.removeLayer(window.markerSementara);
+    }
+    window.markerSementara = L.marker([e.latlng.lat, e.latlng.lng], {
+        icon: L.divIcon({
+            html: '<div style = "background:red;width:30px;height:30px;border-radius:50%;border:3px solid white;box-shadow:0 0 10px rgba(0,0,0,0.5)"></div>',
+            iconSize: [30,30],
+            iconAnchor: [15,15]
+        })
+    }).addToMap(map);
+
+});
+
 initFilter(markers, map);
 initSearch(markers, map);
+renderMainMenu(markers, map);
 
-// const sidebarMenu = document.getElementById("sidebarMenu");
+const drawerToggle = document.getElementById("my-drawer-2");
+const drawerOverlay = document.getElementById("drawerOverlay");
 
-// menu render section disimpan
-// function renderMainMenu(){
-// sidebarMenu.innerHTML=`
-// <li>
-//   <a href="#" id="menuDisimpan" class="py-4">
-//   <i class ="fas fa-bookmark mr-3"></i>Disimpan
-//   </a>
-// </li>
-// <li>
-//   <a href="#" id="menuTerbaru" class="py-4">
-//   <i class ="fas fa-history mr-3"></i>Terbaru
-//   </a>
-// </li>
-// <li>
-//   <a href="#" id="menuPartisipasi" class="py-4">
-//   <i class ="fas fa-comment-medical  mr-3"></i>Partisipasi
-//   </a>
-// </li>
-// `;
+// Tutup sidebar ketika area luar sidebar diklik
+drawerOverlay.addEventListener("click", () => {
+    drawerToggle.checked = false;
+});
 
+// Tutup sidebar ketika tombol Escape ditekan
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        drawerToggle.checked = false;
+    }
+});
 
-// document.getElementById("menuDisimpan")
-// .addEventListener("click", renderDisimpanMenu);
-// }
-
-// function renderDisimpanMenu() {
-//   sidebarMenu.innerHTML = ` 
-//     <li class= "py-3">
-//        <div class= "relative">
-//          <i class = "fas fa-search absolute left-5 top-4 text-black"></i>
-//           <input 
-//            type="text" 
-//            id="searchInput"
-//            placeholder="Telusuri daftar..."
-//            class="w-full pl-10 pr-4 py-2 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 flex items-center"
-//            autocomplete= "off"
-//          />
-
-//           <div id= "searchResult" 
-//            class="absolute left-0 top-full mt-3 w-full bg-white shadow-lg rounded-xl 
-//              max-h-80 overflow-y-auto hidden z-50 
-//             ">
-//           </div>
-//         </div> 
-//     </li>
-//     <li>
-//       <a href="#" id="backBtn" class="py-4">
-//         <i class="fas fa-arrow-left mr-3"></i>Kembali
-//       </a>
-//     </li>
-//     <li>
-//       <a href="#" id="daftarBtn" class="py-4">
-//         <i class="fas fa-list-ul mr-3"></i>Daftar terbaru
-//       </a>
-//     </li>
-//     <li>
-//       <a href="#" id="rencanaBtn" class="py-4">
-//         <i class="fas fa-map-marker-alt mr-3 text-blue-500"></i>Rencana kunjungan
-//       </a>
-//     </li>
-//     <li>
-//       <a href="#" id="berbintangnBtn" class="py-4">
-//         <i class="fas fa-star mr-3 text-orange-400"></i>Tempat berbintang
-//       </a>
-//     </li>
-//     <li>
-//       <a href="#" id="favoritBtn" class="py-4">
-//         <i class="fas fa-heart mr-3 text-red-500"></i>Favorit
-//       </a>
-//     </li>
-
-    
-//   `;
-
-//    initSearch(markers, map);
-
-
-//   document.getElementById("backBtn")
-//     .addEventListener("click", renderMainMenu);
-
-
-
-// }
-
-
-// ================= INIT ===
 renderMainMenu(markers, map)

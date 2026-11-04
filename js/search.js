@@ -1,65 +1,51 @@
+export function initSearch(markers, map, inputId = "searchInput", outputId = "searchResult") {
 
-export function initSearch(markers, map){
+  const input = document.getElementById(inputId);
+  const output = document.getElementById(outputId);
 
-  const input = document.getElementById("searchInput");
-  const output = document.getElementById("searchResult");
+  if (!input || !output) return;
 
-  if(!input) return;
-
-  input.addEventListener("input", function(){
-
+  input.addEventListener("input", function () {
     const keyword = input.value.toLowerCase().trim();
 
-    if(keyword === ""){
+    if (keyword === "") {
       output.classList.add("hidden");
       return;
     }
 
-    const result = markers.filter(item =>
+    const result = markers.filter((item) =>
       item.name.toLowerCase().includes(keyword)
     );
 
     renderSearchResult(result);
-
   });
 
-
-  function renderSearchResult(data){
-
-    if(data.length === 0){
-
-      output.innerHTML = `
-        <div class="p-2 text-gray-500">Tidak ditemukan</div>
-      `;
-
-    }else{
-
-      output.innerHTML = data.map(item => `
+  function renderSearchResult(data) {
+    if (data.length === 0) {
+      output.innerHTML = `<div class="p-2 text-gray-500">Tidak ditemukan</div>`;
+    } else {
+      output.innerHTML = data
+        .map(
+          (item) => `
         <div class="result-item p-2 hover:bg-gray-100 cursor-pointer border-b">
           ${item.name} , ${item.address}
         </div>
-      `).join("");
+      `
+        )
+        .join("");
 
       const items = output.querySelectorAll(".result-item");
 
       items.forEach((el, index) => {
-
         el.addEventListener("click", () => {
-
           map.setView(data[index].marker.getLatLng(), 18);
           data[index].marker.openPopup();
-
           output.classList.add("hidden");
           input.value = data[index].name;
-
         });
-
       });
-
     }
-     
+
     output.classList.remove("hidden");
-
   }
-
 }
