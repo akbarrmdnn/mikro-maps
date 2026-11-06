@@ -144,26 +144,26 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
  
   //event listener
 
-  // Back
+  // back
   document.getElementById("backBtn").addEventListener("click", () => {
     import("../disimpan.js").then(({ renderDisimpanMenu }) => {
       renderDisimpanMenu({sidebarMenu, markers, map});
     });
   });
 
-  // Edit nama
+  // edit nama
   document.getElementById("namaDaftarInput").addEventListener("input", (e) => {
     state.nama = e.target.value;
     saveState();
   });
 
-  // Edit deskripsi
+  // edit deskripsi
   document.getElementById("deskripsiInput").addEventListener("input", (e) => {
     state.deskripsi = e.target.value;
     saveState();
   });
 
-  // Bagikan
+  // bagikan
   document.getElementById("bagikanBtn").addEventListener("click", async () => {
    bagikan({
     title: state.nama,
@@ -171,7 +171,7 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
    });
   });
 
-  // Tambahkan tempat munculin search bar
+  // tambahkan tempat munculin search bar
   document.getElementById("tambahBtn").addEventListener("click", () => {
     const section = document.getElementById("searchSection");
     section.classList.toggle("hidden");
@@ -180,12 +180,12 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
     }
   });
 
-  // Selesai sembunyiin search bar
+  // selesai sembunyiin search bar
   document.getElementById("selesaiBtn").addEventListener("click", () => {
     document.getElementById("searchSection").classList.add("hidden");
   });
 
-  // Search tempat
+  // search tempat
   const searchInput = document.getElementById("searchTempatInput");
   const searchResult = document.getElementById("searchTempatResult");
 
@@ -249,18 +249,18 @@ export function renderDaftarTanpaJudul({ sidebarMenu, markers, map }) {
         });
         saveState();
 
-        // Update list + statistik
+        // update list + statistik
         document.getElementById("tempatList").innerHTML = renderTempatList();
         bindHapusButtons();
 
-        // Update statistik
+        // update statistik
         const stat = document.querySelector(".text-sm.text-gray-500");
         renderDaftarTanpaJudul({ sidebarMenu, markers, map });
       });
     });
   });
 
-  // Hapus item
+  // hapus item
   function bindHapusButtons() {
     sidebarMenu.querySelectorAll(".hapus-btn").forEach((btn) => {
       btn.addEventListener("click", () => {

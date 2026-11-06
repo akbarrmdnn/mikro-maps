@@ -6,12 +6,10 @@ export async function bagikan({ title, text }) {
       return; 
     }
   } catch (err) {
-    // User cancel, atau Web Share gak support
-    // Lanjut ke fallback
+  
   }
 
   try {
-    //fallback: Clipboard API
     if (navigator.clipboard) {
       await navigator.clipboard.writeText(`${title}\n\n${text}`);
       alert("✅ Link disalin ke clipboard!");
@@ -21,7 +19,6 @@ export async function bagikan({ title, text }) {
     console.warn("Clipboard gagal:", err);
   }
 
-  //fallback terakhir: prompt()
   prompt("Copy link ini:", `${title}\n\n${text}`);
 }
 
