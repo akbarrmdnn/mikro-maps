@@ -6,7 +6,7 @@ import { renderMainMenu} from "./disimpan.js";
 //fungsi buat ambil data dari API
 async function loadDataFromAPI() {
   try {
-    const res = await fetch ("http://localhost:3000/api/umkm");
+    const res = await fetch ("https://mikro-maps-production.up.railway.app/api/umkm");
     if (!res.ok) throw new Error("Gagal fetch data");
     return await res.json();
   } catch (err){

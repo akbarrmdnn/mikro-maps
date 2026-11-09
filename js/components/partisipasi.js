@@ -145,7 +145,7 @@ export function renderPartisipasi({sidebarMenu, markers, map}){
     if (isNaN(lat) || isNaN(lng)) return alert("Pilih lokasi di peta mini!");
 
     try {
-      const res = await fetch ("http://localhost:3000/api/umkm", {
+      const res = await fetch ("https://mikro-maps-production.up.railway.app/api/umkm", {
         method : "POST",
         headers: {"Content-type": "application/json"},
         body: JSON.stringify({
