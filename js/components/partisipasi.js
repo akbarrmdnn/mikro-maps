@@ -1,4 +1,3 @@
-import { umkmData } from "../data.js";
 import { getIconByCategory } from "../map.js";
 
 //helper, biar ga kena XSS/ hack
@@ -18,9 +17,6 @@ const STORAGE_KEY = "umkmPartisipasi";
 
 //main function
 export function renderPartisipasi({sidebarMenu, markers, map}){
-    const latTerpilih = window.koordinatBaru.lat || "";
-    const lngTerpilih = window.koordinatBaru.lng || "";
-
     sidebarMenu.innerHTML=`
     <!-- Kembali -->
     <li class="p-3">
@@ -133,7 +129,7 @@ export function renderPartisipasi({sidebarMenu, markers, map}){
     setTimeout(() => miniMap.invalidateSize(), 100);
 
     //submit 
-    document.getElementById("submitBtn").addEventListener("click", () => {
+    document.getElementById("submitBtn").addEventListener("click", async() => {
     const nama = document.getElementById("namaInput").value.trim();
     const kategori = document.getElementById("kategoriInput").value;
     const alamat = document.getElementById("alamatInput").value.trim();
@@ -148,30 +144,30 @@ export function renderPartisipasi({sidebarMenu, markers, map}){
     if (!alamat) return alert("Alamat wajib diisi!");
     if (isNaN(lat) || isNaN(lng)) return alert("Pilih lokasi di peta mini!");
 
-    const newUmkm = {
-      id: `user_${Date.now()}`,
-      name: nama,
-      category: kategori,
-      address: alamat,
-      description: deskripsi,
-      rating: rating,
-      lat: lat,
-      lng: lng,
-      image: "https://via.placeholder.com/200x150/CCCCCC/FFFFFF?text=Foto+UMKM",
-      createdAt: new Date().toISOString(),
-      source: "user"
-    };
+    try {
+      const res = await fetch ("http://localhost:3000/api/umkm", {
+        method : "POST",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+          name: nama,
+          category: kategori,
+          address: alamat,
+          description: deskripsi,
+          lat: lat,
+          lng: lng,
+          rating: rating
+        })
+      });
 
-    
+      const result = await res.json();
 
-    const existing = JSON.parse(localStorage.getItem("umkmPartisipasi") || "[]");
-    existing.push(newUmkm);
-    localStorage.setItem("umkmPartisipasi", JSON.stringify(existing));
+      if (!res.ok) throw new Error(result.error || "Gagal tambah umkm");
 
-    L.marker([lat, lng], {
+      console.log("UMKM di tambahkan:", result.data);
+
+      L.marker([lat, lng], {
        icon: getIconByCategory(kategori)
-    })
-     
+      })    
       .addTo(map)
       .bindPopup(`
         <div class="p-2">
@@ -183,11 +179,15 @@ export function renderPartisipasi({sidebarMenu, markers, map}){
         </div>
       `);
 
-    alert("✅ UMKM berhasil ditambahkan!");
-
-    import("../disimpan.js").then(({ renderMainMenu }) => {
-      renderMainMenu(markers, map);
-    });
+     alert("UMKM berhasil ditambahkan ke server");
+      
+      import("../disimpan.js").then(({ renderMainMenu }) => {
+       renderMainMenu(markers, map);
+      });
+    } catch (err){
+        console.error("Error:", err);
+         alert("❌ Gagal tambah UMKM: " + err.message);
+    }
   });
 
   //kembali
