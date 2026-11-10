@@ -13,7 +13,7 @@ Platform peta interaktif untuk menemukan dan mendata UMKM (Usaha Mikro, Kecil, d
 - **Partisipasi (CRUD):** Tambahkan UMKM baru langsung dari peta. Data dikirim ke server dan tersimpan secara global (bisa dilihat oleh semua user).
 - **Responsive Design:** Tampilan optimal di Desktop maupun Mobile.
 
-## 🛠️ Tech Stack
+## Tech Stack
 **Frontend:**
 - HTML5, CSS3 (Tailwind CSS via CDN)
 - Vanilla JavaScript (ES Modules)
